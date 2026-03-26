@@ -213,9 +213,50 @@ Three approaches, from least to most permissive:
 - **`/sandbox`** — OS-level isolation. The agent runs in a sandboxed environment where it cannot affect the host system
 - **`auto` mode** — a classifier handles approvals automatically. Use only when you trust the agent's judgment for the project
 
-### Safe baseline commands
+### Recommended permission baseline
 
-These read-only commands are safe to pre-approve in any project:
+모든 프로젝트에 적용할 수 있는 권장 permission 설정. 도구 수준에서 허용/차단을 관리하며, 위험한 bash 명령만 명시적으로 차단한다:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch",
+      "Agent",
+      "NotebookEdit",
+      "Bash(*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /*)",
+      "Bash(mkfs:*)",
+      "Bash(dd :*)",
+      "Bash(shutdown:*)",
+      "Bash(reboot:*)",
+      "Bash(poweroff:*)",
+      "Bash(halt:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)"
+    ]
+  }
+}
+```
+
+**설계 원칙:** `Bash(*)`로 모든 bash 명령을 허용하되, deny 목록으로 시스템 파괴(`rm -rf /`, `mkfs`, `dd`, `shutdown`) 및 git 위험 명령(`push --force`, `reset --hard`, `clean`)을 차단한다. deny는 allow보다 우선하므로, 넓은 허용 + 좁은 차단 조합이 가장 실용적이다.
+
+프로젝트별로 deny 목록을 확장할 수 있다. 예: 프로덕션 DB 접근 차단 `"Bash(psql -h prod:*)"`.
+
+### Additional: allowedBashCommands
+
+`permissions` 대신 `allowedBashCommands`를 사용할 수도 있다. 이 방식은 허용 목록만 관리하며, 목록에 없는 명령은 매번 승인을 요청한다:
 
 ```json
 {
@@ -227,7 +268,7 @@ These read-only commands are safe to pre-approve in any project:
 }
 ```
 
-Start with this baseline, then add project-specific commands (e.g., `uv`, `python`, `npm`, `cargo`) based on the actual tech stack. Project-specific commands require case-by-case judgment — for example, `git` allows both safe and destructive operations. Rather than allowing `git` wholesale, register read-only subcommands individually: `"git status"`, `"git log"`, `"git diff"`, `"git branch"` — this way destructive commands like `push --force` or `reset --hard` still require approval.
+이 방식은 더 보수적이지만, 새 명령마다 승인이 필요해 작업 흐름이 느려진다. 프로젝트 신뢰도가 높으면 위의 permission baseline을 권장한다.
 
 Subprocess 환경의 인증 정보 보호가 필요하면 `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1`을 설정한다. Bash tool, hooks, MCP 서버의 subprocess에서 Anthropic 및 클라우드 인증 정보가 자동 제거된다.
 
