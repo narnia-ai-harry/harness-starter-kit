@@ -31,7 +31,9 @@ harness-starter-kit/
 ├── guide/
 │   └── harness-engineering-guide.md   ← 전체 참조 가이드
 ├── prompts/
-│   └── kickoff.md                     ← 최초 1회: harness 구축 킥오프
+│   ├── kickoff.md                     ← 최초 1회: harness 구축 킥오프
+│   └── examples/
+│       └── merge-worktree-SKILL.md    ← Phase 7 참조: 워크트리 머지 스킬
 └── docs/
     └── action-flow.md                 ← 상세 액션 플로우 (사용자 가이드)
 ```

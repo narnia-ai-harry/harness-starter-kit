@@ -86,6 +86,14 @@ claude -w feature-auth    # 터미널 1
 claude -w bugfix-payment  # 터미널 2
 ```
 
+**워크트리 머지:**
+
+```
+/merge-worktree
+```
+
+스쿼시 머지로 main에 합칩니다. 스킬 템플릿: `prompts/examples/merge-worktree-SKILL.md`
+
 **이전 세션 이어가기:**
 
 ```

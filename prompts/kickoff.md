@@ -27,12 +27,12 @@
     - `.claude/memory/harness-candidates.md`
     - `.claude/commands/harness-review.md`
     - `.claude/commands/harness-health-check.md`
-- **Phase 2 (Settings):** `.claude/settings.local.json` 생성 — allowedBashCommands, permissions, hooks
-- **Phase 3 (Skills & Subagents):** `.claude/skills/`, `.claude/agents/` 에 필요한 파일 생성
-- **Phase 4 (Hooks):** `.claude/settings.local.json`에 hook 설정 추가, 필요 시 `.claude/hooks/` 스크립트
-- **Phase 5 (MCP):** `.mcp.json` 생성
-- **Phase 6 (Code Structure):** 구조 가이드 문서 작성
-- **Phase 7 (Working Memory & Parallel):** `.claude/memory/`에 plan, checklist, context notes
+- **Phase 2 (Settings):** `.claude/settings.local.json` 생성 — 가이드의 권장 permission baseline 적용, 필요 시 allowedBashCommands 추가
+- **Phase 3 (Skills & Subagents):** `.claude/skills/`, `.claude/agents/` 에 프로젝트에 필요한 스킬/서브에이전트 파일 생성
+- **Phase 4 (Hooks):** `.claude/settings.local.json`에 hook 설정 추가, 필요 시 `.claude/hooks/` 스크립트 (예: commit-session.sh)
+- **Phase 5 (MCP):** `.mcp.json` 생성 — 필요한 외부 도구 연결
+- **Phase 6 (Code Structure):** 구조 가이드 문서를 `.claude/rules/` 또는 별도 파일로 작성
+- **Phase 7 (Working Memory & Parallel):** `.claude/memory/`에 plan, checklist, context notes 초기화
 - 각 Phase의 산출물을 섹션 단위로 제안하고, 내 확인 후 적용한다
 - 하나의 Phase가 끝나면 다음 Phase로 넘어갈지 확인한다
 

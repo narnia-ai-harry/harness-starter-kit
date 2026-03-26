@@ -589,6 +589,9 @@ fi
 
 # 6. Commit
 echo "$COMMIT_MSG" | git commit -F - --no-verify
+
+# Optional: auto-update CHANGELOG if docs/CHANGELOG.md exists
+# See codefactory-co/kimoring-ai-skills for reference implementation
 ```
 
 **Trade-off:** Every agent turn triggers a `claude -p` API call. A 20-turn session means 20 additional calls. This is worthwhile for complex parallel work or team collaboration where decision history matters, but overkill for simple solo projects. To reduce cost, remove the `claude -p` block from the script and rely on the fallback message only. Note that `claude -p` requires Claude Code CLI authentication to be configured on the machine.
@@ -709,6 +712,8 @@ The workflow becomes:
 **Squash merge for clean history:**
 
 WIP commits are valuable as working history but should not pollute the main branch. Use `git merge --squash` or PR-based squash merge to combine all worktree commits into a single, comprehensive commit.
+
+**Automating the merge:** A `/merge-worktree` skill can automate this entire flow — validate the worktree environment, analyze commit history, perform `git merge --squash`, and craft a comprehensive commit message. See `prompts/examples/merge-worktree-SKILL.md` in the starter kit for a ready-to-use template.
 
 **Scaling guideline:** The number of parallel worktrees you can manage effectively is limited by your ability to review and direct — not by the tool. Start with 2-3 parallel sessions. Add more only after you've established a comfortable review cadence.
 
